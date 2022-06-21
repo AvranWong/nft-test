@@ -29,10 +29,7 @@ contract NFT is ERC721Enumerable, Ownable {
         return string(abi.encodePacked(BASE_URI, "/"));
     }
 
-    function mint(address addr)
-        public
-        payable
-        returns (uint256)
+    function mintToken(address addr) public payable returns(uint256)
     {
         uint256 supply = totalSupply();
         require(supply <= MAX_SUPPLY, "Would exceed max supply");    

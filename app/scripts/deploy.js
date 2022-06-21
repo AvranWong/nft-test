@@ -1,7 +1,7 @@
 
 const hre = require("hardhat");
-const BASE_URI = "ipfs://QmTL9uxGtENJzAWnd3oXu58UTfpEy4p1oSnVA6AqZdqUW5/";
-const TOKEN_NAME = "NFT";
+const BASE_URI = "ipfs://QmTL9uxGtENJzAWnd3oXu58UTfpEy4p1oSnVA6AqZdqUW5";
+const TOKEN_NAME = "Testing NFTs";
 const TOKEN_SYMBOL = "NFT";
 //Set mint price
 const PRICE = "100000000000000" // 0.0001 ETH - use whatever price you want, but the denomiation is in WEI
