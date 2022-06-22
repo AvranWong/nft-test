@@ -3,7 +3,7 @@
  */
  require('dotenv').config();
  require("@nomiclabs/hardhat-waffle");
- const ETH_TEST_PRIVATE_KEY = "00c234e691dd67b7098ba39662106cca3ec9d84380747cf5adf741a631d4d40c"//process.env.GANACHE_KEY;
+ const ETH_TEST_PRIVATE_KEY = process.env.GANACHE_KEY;
  module.exports = {
    solidity: "0.8.1",
    networks: {

@@ -1,8 +1,8 @@
 
 const hre = require("hardhat");
-const BASE_URI = "ipfs://QmTL9uxGtENJzAWnd3oXu58UTfpEy4p1oSnVA6AqZdqUW5";
-const TOKEN_NAME = "Testing NFTs";
-const TOKEN_SYMBOL = "NFT";
+const BASE_URI = "ipfs://QmXTBUekh3KjaMZZuDCtUf3QfHfHsR3mjKX1pe5ZiWZD3z";
+const contractURI= "https:xyz";
+const royaltyFeesInBips = "2500" //25%
 //Set mint price
 const PRICE = "100000000000000" // 0.0001 ETH - use whatever price you want, but the denomiation is in WEI
 
@@ -13,8 +13,8 @@ async function main() {
   
   console.log("Account balance:", (await deployer.getBalance()).toString());
   try {
-    const Contract = await hre.ethers.getContractFactory("NFT");
-    const contract = await Contract.deploy(BASE_URI, PRICE, TOKEN_NAME, TOKEN_SYMBOL);
+    const Contract = await hre.ethers.getContractFactory("NFTRoyalties");
+    const contract = await Contract.deploy(royaltyFeesInBips,contractURI,BASE_URI, PRICE);
     //const contract = await Contract.deploy();
     await contract.deployed();
   

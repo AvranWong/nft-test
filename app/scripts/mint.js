@@ -2,9 +2,9 @@ const hre = require("hardhat");
 
 async function main() {
   try {
-    const Contract = await hre.ethers.getContractFactory("NFT"); //Change contract name here
+    const Contract = await hre.ethers.getContractFactory("NFTRoyalties"); //Change contract name here
     const contract = await Contract.attach(
-      "0x9E9C7D5CB44faA15F1929553a13Ac30f9ac79BcF" // The deployed contract address
+      "0xc42D9FDD68216992149640003967dCA125ae1690" // The deployed contract address
     );
    
     const [minter] = await ethers.getSigners();
