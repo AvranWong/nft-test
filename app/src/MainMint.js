@@ -12,15 +12,18 @@ const MainMint = ({accounts,setAccounts})=>{
         if (window.ethereum){
             const provider = new ethers.providers.Web3Provider(window.ethereum); //gets provider to access blockchain
             const signer = provider.getSigner(); //gets the signature to sign
+            const balance = (await signer.getBalance()).toString();
+            console.log(balance);
             const contract = new ethers.Contract(
                 NFTRoyaltiesAddress,
                 NFTRoyalties.abi,
                 signer
-
             );
             //Call mint functions
             try {
-                const response = await contract.mintToken();
+                console.log(accounts[0]);
+                const cost = await contract.PRICE();
+                const response = await contract.mintToken(accounts[0],{value:cost});
                 console.log("response: ",response);
 
             }catch(err){
@@ -34,7 +37,7 @@ const MainMint = ({accounts,setAccounts})=>{
             {isConnected ?(
                 <div>
                 <input type = "number" value = {mintAmount}/>
-                <button onClick={handleMint}> Mint Now</button>
+                <button onClick= {handleMint}> Mint Now</button>
                 </div>
             ) : (
                 <div>

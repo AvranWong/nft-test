@@ -6,7 +6,7 @@ const NavBar = ({accounts, setAccounts})=>{
 
     //Async function to connect metamask account
     async function connectAccount(){
-        if (window.ehtereum){
+        if (window.ethereum){
             //Gets accounts in the metamask wallet
             const accounts = await window.ethereum.request({
                 method:"eth_requestAccounts",
