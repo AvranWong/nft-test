@@ -5,12 +5,14 @@ import NFTRoyalties from './NFTRoyalties.json';
 const NFTRoyaltiesAddress = "0xbc04C3C2dCA02Fbd6eE03A7CD6f9973CFbf53ffD";
 
 
-const MainMint = ({accounts,setAccounts, isImg, setIsImg, imgUrl, setImgUrl})=>{
+const MainMint = ({accounts,setAccounts, imgUrl, setImgUrl})=>{
     const[mintAmount, setMintAmount] = useState(1); //Create another state to select quantity
     const isConnected = Boolean(accounts[0]);
     const [data,setData] = useState({});
     //Metadata CID
-    const BASE_URI = "QmXTBUekh3KjaMZZuDCtUf3QfHfHsR3mjKX1pe5ZiWZD3z";
+    const JSON_CID = "QmXTBUekh3KjaMZZuDCtUf3QfHfHsR3mjKX1pe5ZiWZD3z";
+    const IMG_CID = "QmTL9uxGtENJzAWnd3oXu58UTfpEy4p1oSnVA6AqZdqUW5"
+
     async function HandleMint(){
         if (window.ethereum){
             const provider = new ethers.providers.Web3Provider(window.ethereum); //gets provider to access blockchain
@@ -23,40 +25,34 @@ const MainMint = ({accounts,setAccounts, isImg, setIsImg, imgUrl, setImgUrl})=>{
                 signer
             );
             //Call mint functions
-            try {
-                console.log(accounts[0]);
+            try {               
+                console.log("Minting on Account: ",accounts[0]);
                 const cost = await contract.PRICE();
                 /*Part where the response gives the whole transaction obj rather than the tokenId*/
                 const response = await contract.mintToken(accounts[0],{value:cost});
-                console.log("response: ",response.hash);
-
-                /*Potential Code for getting the tokenId, but i couldn't manage to import in the web3 lib */
-                /*web3.eth.getTransactionReceipt(response.hash).then(function(data){
-                    let transaction = data;
-                    let logs = data.logs;
-                    console.log(logs);
-                    console.log(web3.utils.hexToNumber(logs[0].topics[3]));
-                });*/
-                
+                //Code to tokenID, uses a ethers event listener for transfer, then parses the logs to get topic 3
+                contract.on('Transfer', (from,to, tokenId) => {
+                    console.log("In event listener");
+                    //Converts bignumber to int
+                    console.log("Token ID: ", parseInt(tokenId));
+                  });
                 /*Making the API Call for the image ipfs CID*/
-                var urL = "http://localhost:8080/NFT/meta/" + BASE_URI + "/" + parseInt(response.chainId+1);
-                //console.log(urL);
-                fetch(urL)
+                var JSON_URL = "http://localhost:8080/NFT/meta/" + JSON_CID + "/" + 1;
+                console.log("JSON URL: ",JSON_URL);
+                fetch(JSON_URL)
                 .then(res => res.json())
                 .then(res => res.image)
                 .then(data => setData(data));
-                console.log(data);
+                console.log(data); //Returns null issue is here
 
-                /*Extracting the image ipfs CID*/
-                var imgAdd = data;
-                imgAdd = imgAdd.slice(7, -6);
-                console.log(imgAdd);
+                // /*Extracting the image ipfs CID*/
+                // var imgAdd = data.slice(7, -6);
+                // console.log("Extracted Image CID: ",imgAdd);
                 
                 /*Combining the image CID with the NFTId (hardcoded) to get the API Call url for NFT image*/
-                var imgURL = "http://localhost:8080/NFT/img/" + imgAdd + "/" + parseInt(response.chainId+1);
-                
+                var imgURL = "http://localhost:8080/NFT/img/" + IMG_CID + "/" + parseInt(1);
+                console.log("Image URL: ",imgURL);
                 /*To update values in main function*/
-                setIsImg(imgURL);
                 setImgUrl(imgURL);
                 
             }catch(err){

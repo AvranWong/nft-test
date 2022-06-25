@@ -6,15 +6,14 @@ import './App.css';
 
 function App() {
   const[accounts,setAccounts] = useState([]);
-  const[isImg, setIsImg] = useState(0);
   const [imgUrl, setImgUrl] = useState({});
   
   return (
     <div className="App">
-      <MainMint accounts = {accounts} setAccounts = {setAccounts} isImg = {isImg} setIsImg = {setIsImg} imgUrl = {imgUrl} setImgUrl = {setImgUrl} ></MainMint>
+      <MainMint accounts = {accounts} setAccounts = {setAccounts} imgUrl = {imgUrl} setImgUrl = {setImgUrl} ></MainMint>
       <NavBar accounts = {accounts} setAccounts = {setAccounts}></NavBar>
       {/*For showing the NFT image once NFT is Minted */}
-      <ShowNFT isImg = {isImg} imgUrl = {imgUrl} ></ShowNFT>
+      <ShowNFT imgUrl = {imgUrl} ></ShowNFT>
     </div>
   );
 }
